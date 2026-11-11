@@ -9,7 +9,7 @@
 <title>NetQuest – Misi Dasar Jaringan Komputer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Exo+2:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#04060f;--panel:#0b1530;--line:#1d3a5f;--cyan:#5fd0ff;--pink:#ff7a3d;--gold:#ffcf4d;--ok:#52ffb8;--bad:#ff5d73;--text:#e6f1ff;--mute:#8fa6c9}
 *{box-sizing:border-box}
@@ -102,11 +102,7 @@ h2{letter-spacing:.06em}
 .btn:hover{box-shadow:none;filter:brightness(1.18)}
 .btn.ghost{border:0;background:rgba(95,208,255,.1);color:var(--cyan);box-shadow:inset 0 0 0 1px var(--cyan)}
 .faqbtn{border-radius:4px}
-.crawl{height:150px;overflow:hidden;perspective:260px;margin:12px 0 18px;text-align:center;color:var(--gold);font-weight:700;font-size:1.05rem;letter-spacing:.04em;-webkit-mask-image:linear-gradient(transparent,#000 28%,#000 68%,transparent);mask-image:linear-gradient(transparent,#000 28%,#000 68%,transparent)}
-.cin{transform-origin:50% 100%;transform:rotateX(24deg) translateY(140px);animation:crawl 28s linear infinite}
 footer{font-size:.78rem;opacity:.85;line-height:1.5}
-@keyframes crawl{to{transform:rotateX(24deg) translateY(-115%)}}
-@media (prefers-reduced-motion:reduce){.crawl{height:auto;-webkit-mask-image:none;mask-image:none}.cin{transform:none}}
 /* ===== TAMPILAN LANJUTAN: KACA & CAHAYA ===== */
 :root{--pink:#a78bff}
 html,body{background:radial-gradient(ellipse at 12% 6%,rgba(60,110,255,.22),transparent 55%),radial-gradient(ellipse at 95% 90%,rgba(120,90,255,.14),transparent 50%),var(--bg);background-attachment:fixed}
@@ -141,6 +137,21 @@ h1{letter-spacing:.26em;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
 @media (max-width:520px){.orb{width:110px;height:110px;opacity:.5}.rk{display:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes rise{from{opacity:0;letter-spacing:.55em;filter:blur(8px)}}
+.tw{position:relative;margin:8px 0 16px;border-radius:14px;border:1px solid rgba(82,255,184,.28);background:rgba(2,8,14,.85);box-shadow:0 0 44px rgba(82,255,184,.09);overflow:hidden;cursor:pointer}
+.tw::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(82,255,184,.035) 0 1px,transparent 1px 3px)}
+.th{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(82,255,184,.06);border-bottom:1px solid rgba(82,255,184,.16);font-family:"JetBrains Mono",Consolas,monospace;font-size:.78rem;color:var(--mute)}
+.th i{width:9px;height:9px;border-radius:50%;background:#ff5d73}.th i:nth-child(2){background:#ffcf4d}.th i:nth-child(3){background:#52ffb8}
+.th span{margin-left:8px}
+.tb{height:236px;overflow:hidden;padding:12px 15px;font-family:"JetBrains Mono",Consolas,"Courier New",monospace;font-size:.9rem;line-height:1.6;color:#52ffb8;text-shadow:0 0 8px rgba(82,255,184,.4)}
+.tl{white-space:pre-wrap;word-break:break-word}
+.tl.p::before{content:"$ ";color:var(--cyan)}
+.tl.f{color:#ff6b80;text-shadow:0 0 8px rgba(255,93,115,.45)}
+.tl.w{color:#ffcf4d;text-shadow:0 0 8px rgba(255,207,77,.4)}
+.tl.g{margin-top:6px;color:#fff;font-weight:700;font-size:1rem;text-shadow:0 0 12px #52ffb8;animation:glitch 4s infinite}
+.cur{display:inline-block;width:.55em;height:1.05em;margin-left:2px;vertical-align:-.15em;background:#52ffb8;box-shadow:0 0 8px #52ffb8;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@keyframes glitch{0%,93%,100%{transform:none}94%{transform:translateX(-2px);text-shadow:2px 0 #ff6b80,-2px 0 #5fd0ff}96%{transform:translateX(2px);text-shadow:-2px 0 #ff6b80,2px 0 #5fd0ff}98%{transform:none}}
+@media (max-width:520px){.tb{height:250px;font-size:.82rem}}
 @keyframes pop{50%{transform:scale(1.03)}}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -215,18 +226,34 @@ function hud(){$("rk").textContent=rank();document.querySelector(".hud").style.s
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
 /* ===== LAYAR ===== */
+const BOOT=[["p","ssh teknisi@lab-tkj"],["","menghubungkan ke jaringan sekolah ..."],["f","[GAGAL] jaringan padam, tidak ada respon"],["w","[PERINGATAN] paket data tersesat, loss 100%"],["f","[GAGAL] server e-learning tidak menjawab"],["p","ping 192.168.1.1"],["","Request timed out."],["","memuat modul: topologi, perangkat, ip  [##########] 100%"],["o","[ OK ] 8 misi siap dijalankan"],["g","AKSES DIBERIKAN. Selamat datang, Teknisi."]];
+function termInit(){
+ const el=$("tb");if(!el)return;let done=false,i=0;
+ const mk=l=>{const d=document.createElement("div");d.className="tl "+l[0];el.appendChild(d);return d};
+ const cur=()=>{const c=document.createElement("span");c.className="cur";return c};
+ function all(){done=true;el.innerHTML="";let d;BOOT.forEach(l=>{d=mk(l);d.textContent=l[1]});d.appendChild(cur())}
+ function line(){
+  if(done||!document.body.contains(el))return;
+  const l=BOOT[i++],d=mk(l),c=cur();d.appendChild(c);let k=0;const sp=l[0]==="p"?45:15;
+  (function ch(){if(done||!document.body.contains(el))return;
+   if(k<l[1].length){c.before(l[1][k++]);el.scrollTop=el.scrollHeight;setTimeout(ch,sp)}
+   else if(i<BOOT.length){c.remove();setTimeout(line,l[0]==="p"?520:260)}})();
+ }
+ $("tw").onclick=()=>{if(!done)all()};
+ if(matchMedia("(prefers-reduced-motion:reduce)").matches)all();else setTimeout(line,400);
+}
 function start(){
  let saved="";try{saved=localStorage.getItem("nq_name")||""}catch(e){}
  S.xp=0;S.stars=[];S.hearts=NYAWA;hud();
  stage.innerHTML=`<section class="hero"><svg class="orb" viewBox="0 0 200 200" aria-hidden="true"><defs><radialGradient id="cg"><stop offset="0" stop-color="#bfeaff"/><stop offset="1" stop-color="#5fd0ff" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="100" r="30" fill="url(#cg)"/><circle cx="100" cy="100" r="92" fill="none" stroke="#5fd0ff" stroke-opacity=".25"/><circle class="r1" cx="100" cy="100" r="76" fill="none" stroke="#5fd0ff" stroke-opacity=".55" stroke-dasharray="3 9"/><g class="r2"><circle cx="100" cy="100" r="58" fill="none" stroke="#a78bff" stroke-opacity=".5"/><circle cx="158" cy="100" r="4" fill="#ffcf4d"/></g><g class="r3"><circle cx="100" cy="100" r="42" fill="none" stroke="#5fd0ff" stroke-opacity=".35"/><circle cx="100" cy="58" r="3" fill="#5fd0ff"/></g></svg><h1>NETQUEST</h1>
  <p class="mute" style="font-size:1.2rem">Selesaikan 8 misi, kuasai dasar jaringan komputer, dan raih pangkat <b style="color:var(--gold)">Master Jaringan</b>.</p>
- <div class="crawl" aria-label="Kisah singkat"><div class="cin"><p>Laboratorium TKJ lumpuh. Paket data tersesat, kabel terputus, dan server tak lagi menjawab.</p><p>Hanya seorang teknisi muda yang mampu memulihkannya. Kuasai topologi, perangkat, dan alamat IP, lalu bangun kembali jaringan sebelum semuanya padam.</p><p>Bersiaplah, Teknisi. Misi pertamamu menunggu.</p></div></div>
+ <div class="tw" id="tw" role="img" aria-label="Simulasi terminal: jaringan lab TKJ padam, teknisi dibutuhkan"><div class="th"><i></i><i></i><i></i><span>teknisi@lab-tkj:~</span></div><div class="tb" id="tb"></div></div>
  <div class="card"><label for="nm"><b>Nama panggilanmu</b></label><br>
  <input id="nm" maxlength="20" placeholder="contoh: Rina_TKJ" value="${esc(saved)}" autocomplete="off">
  <p class="mute">Aturan: tiap misi punya ${NYAWA} nyawa. Jawaban benar beruntun memberi bonus combo.</p>
  <button class="btn" id="go">Mulai Petualangan</button></div>
 </section>`;
- $("go").onclick=()=>{S.name=($("nm").value.trim()||"Pemain");try{localStorage.setItem("nq_name",S.name)}catch(e){}map()};
+ termInit();$("go").onclick=()=>{S.name=($("nm").value.trim()||"Pemain");try{localStorage.setItem("nq_name",S.name)}catch(e){}map()};
 }
 function map(skip){
  const open=S.stars.length;
