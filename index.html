@@ -142,7 +142,7 @@ h1{letter-spacing:.26em;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
 .th{display:flex;align-items:center;gap:6px;padding:9px 14px;background:rgba(82,255,184,.06);border-bottom:1px solid rgba(82,255,184,.16);font-family:"JetBrains Mono",Consolas,monospace;font-size:.78rem;color:var(--mute)}
 .th i{width:9px;height:9px;border-radius:50%;background:#ff5d73}.th i:nth-child(2){background:#ffcf4d}.th i:nth-child(3){background:#52ffb8}
 .th span{margin-left:8px}
-.tb{height:236px;overflow:hidden;padding:12px 15px;font-family:"JetBrains Mono",Consolas,"Courier New",monospace;font-size:.9rem;line-height:1.6;color:#52ffb8;text-shadow:0 0 8px rgba(82,255,184,.4)}
+.tb{height:190px;overflow:hidden;padding:12px 15px;font-family:"JetBrains Mono",Consolas,"Courier New",monospace;font-size:.9rem;line-height:1.6;color:#52ffb8;text-shadow:0 0 8px rgba(82,255,184,.4)}
 .tl{white-space:pre-wrap;word-break:break-word}
 .tl.p::before{content:"$ ";color:var(--cyan)}
 .tl.f{color:#ff6b80;text-shadow:0 0 8px rgba(255,93,115,.45)}
@@ -151,7 +151,9 @@ h1{letter-spacing:.26em;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
 .cur{display:inline-block;width:.55em;height:1.05em;margin-left:2px;vertical-align:-.15em;background:#52ffb8;box-shadow:0 0 8px #52ffb8;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 @keyframes glitch{0%,93%,100%{transform:none}94%{transform:translateX(-2px);text-shadow:2px 0 #ff6b80,-2px 0 #5fd0ff}96%{transform:translateX(2px);text-shadow:-2px 0 #ff6b80,2px 0 #5fd0ff}98%{transform:none}}
-@media (max-width:520px){.tb{height:250px;font-size:.82rem}}
+@media (max-width:520px){.tb{height:176px;font-size:.8rem}}
+.xp{white-space:nowrap}
+.sv{display:block;max-width:520px;margin:8px auto}
 @keyframes pop{50%{transform:scale(1.03)}}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -231,7 +233,7 @@ function termInit(){
  const el=$("tb");if(!el)return;let done=false,i=0;
  const mk=l=>{const d=document.createElement("div");d.className="tl "+l[0];el.appendChild(d);return d};
  const cur=()=>{const c=document.createElement("span");c.className="cur";return c};
- function all(){done=true;el.innerHTML="";let d;BOOT.forEach(l=>{d=mk(l);d.textContent=l[1]});d.appendChild(cur())}
+ function all(){done=true;el.innerHTML="";let d;BOOT.forEach(l=>{d=mk(l);d.textContent=l[1]});d.appendChild(cur());el.scrollTop=el.scrollHeight}
  function line(){
   if(done||!document.body.contains(el))return;
   const l=BOOT[i++],d=mk(l),c=cur();d.appendChild(c);let k=0;const sp=l[0]==="p"?45:15;
@@ -351,11 +353,11 @@ function fly(sv,pts,done){
 }
 const SIM={
 build(){
- const pos=[[80,50],[560,50],[80,240],[560,240]],cx=320,cy=145;let ok=false,n=0;
+ const pos=[[62,48],[358,48],[62,236],[358,236]],cx=210,cy=142;let ok=false,n=0;
  stage.innerHTML=`<div class="card"><h2>Simulasi: Bangun Jaringan Star</h2><p id="ins"><b>Langkah 1.</b> Pilih perangkat yang cocok sebagai pusat topologi Star.</p>
- <svg class="sv" id="sv" viewBox="0 0 640 310" role="img" aria-label="Simulasi topologi star"><g id="ln"></g>
+ <svg class="sv" id="sv" viewBox="0 0 420 300" role="img" aria-label="Simulasi topologi star"><g id="ln"></g>
  <circle cx="${cx}" cy="${cy}" r="42" fill="#0b1530" stroke="#5fd0ff" stroke-dasharray="6 5"/><text id="cic" x="${cx}" y="${cy+12}" text-anchor="middle" font-size="36">❓</text>
- ${pos.map((p,i)=>`<g class="pcn" data-i="${i}" tabindex="0" role="button" aria-label="PC-0${i+1}" style="opacity:.4"><circle cx="${p[0]}" cy="${p[1]}" r="38" fill="#0b1530" stroke="#1d3a5f" stroke-width="3"/><text x="${p[0]}" y="${p[1]+11}" text-anchor="middle" font-size="32">💻</text><text x="${p[0]}" y="${p[1]+58}" text-anchor="middle" fill="#8fa6c9" font-size="15">PC-0${i+1}</text></g>`).join("")}</svg>
+ ${pos.map((p,i)=>`<g class="pcn" data-i="${i}" tabindex="0" role="button" aria-label="PC-0${i+1}" style="opacity:.4"><circle cx="${p[0]}" cy="${p[1]}" r="35" fill="#0b1530" stroke="#1d3a5f" stroke-width="3"/><text x="${p[0]}" y="${p[1]+10}" text-anchor="middle" font-size="30">💻</text><text x="${p[0]}" y="${p[1]+55}" text-anchor="middle" fill="#8fa6c9" font-size="16" font-weight="700">PC-0${i+1}</text></g>`).join("")}</svg>
  <div class="opts g" id="ch"></div><div id="fb"></div></div>`;
  const sv=$("sv");
  shuffle([["🔀 Switch",1],["🖨️ Printer",0],["📽️ Proyektor",0]]).forEach(o=>{
