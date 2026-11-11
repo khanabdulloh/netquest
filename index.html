@@ -66,6 +66,20 @@ footer{text-align:center;color:var(--mute);font-size:.85rem}
 .slot.on{border:2px solid var(--ok);background:rgba(77,255,176,.1)}
 .slot.hot{border-color:var(--gold);box-shadow:0 0 18px var(--gold);transform:scale(1.1)}
 .ico{font-size:1.4rem;margin-right:6px}
+.faqbtn{font:inherit;font-weight:700;cursor:pointer;color:var(--cyan);background:transparent;border:1px solid var(--cyan);border-radius:10px;padding:4px 12px}
+.faqbtn:hover{background:rgba(51,230,255,.12)}
+dialog{width:min(640px,94vw);max-height:86vh;overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--cyan);border-radius:16px;padding:20px;box-shadow:0 0 40px rgba(51,230,255,.35)}
+dialog::backdrop{background:rgba(5,7,25,.75)}
+.fh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.fh h2{margin:0}
+.fg{color:var(--pink);font-weight:700;margin:16px 0 6px}
+details{background:#0e1138;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:700;padding:11px 14px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"＋";color:var(--cyan);margin-right:8px}
+details[open] summary::before{content:"－"}
+details[open]{border-color:var(--cyan)}
+details p{padding:0 14px 4px;margin:0 0 10px}
 @keyframes pop{50%{transform:scale(1.03)}}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -76,12 +90,13 @@ footer{text-align:center;color:var(--mute);font-size:.85rem}
 <div class="app">
   <header class="hud">
     <div class="brand">NETQUEST</div>
-    <div class="stats"><span class="xp">XP <b id="xp">0</b></span><span class="hearts" id="hearts" aria-label="Nyawa"></span></div>
+    <div class="stats"><button class="faqbtn" id="faqbtn" aria-haspopup="dialog">FAQ</button><span class="xp">XP <b id="xp">0</b></span><span class="hearts" id="hearts" aria-label="Nyawa"></span></div>
   </header>
   <main id="stage"></main>
   <footer>Inovasi Pembelajaran Teknik Jaringan Komputer · Kelas XI TKJ</footer>
 </div>
 
+<dialog id="faq" aria-labelledby="faqt"><div class="fh"><h2 id="faqt">FAQ</h2><button class="btn ghost" id="faqx">Tutup</button></div><div id="faqb"></div></dialog>
 <script>
 /* ===== DATA MATERI & SOAL (mudah diedit guru) ===== */
 const MISI=[
@@ -205,6 +220,30 @@ function finish(){
  <div class="row"><button class="btn" id="again">Main Lagi</button><button class="btn ghost" id="mp">Peta Misi</button></div></div>`;
  $("again").onclick=start;$("mp").onclick=()=>map(true);
 }
+
+/* ===== FAQ (mudah diedit) ===== */
+const FAQ=[
+["Cara bermain",[
+["Bagaimana cara menyelesaikan misi?","Baca briefing, lalu kerjakan tantangan atau simulasinya. Misi baru terbuka setelah misi sebelumnya selesai."],
+["Apa gunanya nyawa (♥)?","Tiap misi punya 3 nyawa. Jawaban atau langkah yang salah mengurangi 1 nyawa. Jika nyawa habis, misi diulang dan XP misi itu tidak dihitung."],
+["Bagaimana XP dan combo bekerja?","Jawaban benar memberi 100 XP. Jawaban benar beruntun memberi bonus tambahan. Combo kembali ke nol saat kamu salah."],
+["Bagaimana cara mendapat 3 bintang?","Selesaikan misi tanpa kehilangan nyawa. Bintang sama dengan sisa nyawa saat misi selesai, dan kamu boleh mengulang misi untuk memperbaikinya."],
+["Apakah progresku tersimpan?","Hanya nama panggilanmu yang diingat. XP dan bintang dimulai dari awal setiap halaman dibuka ulang."]]],
+["Materi jaringan",[
+["Apa bedanya hub dan switch?","Hub mengirim data ke semua port. Switch hanya mengirim ke port tujuan berdasarkan MAC address, jadi lebih efisien dan lebih aman."],
+["Apa bedanya LAN dan WAN?","LAN mencakup area kecil seperti satu gedung atau lab. WAN mencakup wilayah sangat luas, bahkan antar negara. Internet adalah contoh WAN."],
+["Apa bedanya IP address dan MAC address?","MAC address adalah alamat fisik yang melekat pada NIC. IP address adalah alamat logis yang bisa diatur dan menunjukkan posisi perangkat di jaringan."],
+["Mengapa topologi Star paling banyak dipakai?","Mudah dipasang, mudah dilacak kalau ada gangguan, dan satu kabel putus hanya mengganggu satu komputer. Kelemahannya, jika switch pusat mati, seluruh jaringan ikut mati."],
+["Apa itu ping?","Ping mengirim paket kecil ke perangkat lain untuk menguji apakah keduanya terhubung dan berapa lama balasannya."],
+["Apa fungsi gateway?","Gateway adalah pintu keluar sebuah LAN menuju jaringan lain, biasanya alamat router."]]]
+];
+function buildFaq(){
+ $("faqb").innerHTML=FAQ.map(g=>`<div class="fg">${g[0]}</div>`+g[1].map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join("")).join("");
+}
+buildFaq();
+$("faqbtn").onclick=()=>$("faq").showModal();
+$("faqx").onclick=()=>$("faq").close();
+$("faq").addEventListener("click",e=>{if(e.target===$("faq"))$("faq").close()});
 
 /* ===== SIMULASI INTERAKTIF ===== */
 function gain(n){S.xp+=n;S.gain+=n;hud()}
