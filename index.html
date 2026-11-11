@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetQuest – Misi Dasar Jaringan Komputer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d2a;--panel:#151945;--line:#2b3190;--cyan:#33e6ff;--pink:#ff4fa3;--gold:#ffc83d;--ok:#4dffb0;--bad:#ff5d73;--text:#e8ecff;--mute:#9aa3d9}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Rajdhani,"Segoe UI",system-ui,sans-serif;font-size:18px;font-weight:500}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.app{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:14px 14px 28px;min-height:100vh;display:flex;flex-direction:column}
+.hud{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:rgba(21,25,69,.85);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(6px)}
+.brand{font-family:Orbitron,sans-serif;font-weight:800;letter-spacing:.06em;color:var(--cyan);font-size:1rem}
+.stats{display:flex;gap:16px;align-items:center;font-weight:700}
+.xp b{color:var(--gold)}.hearts{color:var(--pink);letter-spacing:2px}
+main{flex:1;padding:22px 0}
+h1,h2{font-family:Orbitron,sans-serif;margin:0 0 10px;line-height:1.2}
+h1{font-size:clamp(2rem,8vw,3.4rem);font-weight:800;color:#fff;text-shadow:0 0 24px rgba(51,230,255,.55),0 0 2px var(--pink)}
+h2{font-size:clamp(1.15rem,4.5vw,1.6rem);color:var(--cyan)}
+p{line-height:1.5;margin:0 0 12px}
+.mute{color:var(--mute)}
+.card{background:rgba(21,25,69,.9);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 0 30px rgba(51,230,255,.07)}
+.btn{font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer;border:0;border-radius:12px;padding:12px 22px;color:#071033;background:linear-gradient(90deg,var(--cyan),#8f7bff);box-shadow:0 0 18px rgba(51,230,255,.45);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 26px rgba(51,230,255,.7)}
+.btn.ghost{background:transparent;color:var(--cyan);border:1px solid var(--cyan);box-shadow:none}
+input{font:inherit;width:100%;max-width:340px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0e1138;color:var(--text);margin:6px 0 16px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hero{padding:30px 6px 10px}
+.map{display:grid;gap:12px}
+.mis{display:flex;align-items:center;gap:14px;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;background:rgba(21,25,69,.9);border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:border-color .2s,transform .15s}
+.mis:hover:not(:disabled){border-color:var(--cyan);transform:translateX(4px)}
+.mis:disabled{opacity:.45;cursor:not-allowed}
+.mis .ic{font-size:1.9rem;width:48px;height:48px;display:grid;place-items:center;border-radius:12px;background:#0e1138;border:1px solid var(--line)}
+.mis.done .ic{border-color:var(--ok)}
+.mis .t{font-weight:700;font-size:1.1rem}.mis .s{color:var(--gold);margin-left:auto;white-space:nowrap}
+.brief li{margin-bottom:10px;line-height:1.45}
+.brief b{color:var(--gold)}
+.kv{display:inline-block;background:#0e1138;border:1px solid var(--line);border-radius:8px;padding:1px 8px;color:var(--cyan);font-weight:700}
+.bar{height:8px;background:#0e1138;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--pink));transition:width .4s}
+.q{font-size:1.25rem;font-weight:700;margin-bottom:14px;line-height:1.35}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;font-weight:600;text-align:left;color:var(--text);cursor:pointer;background:#0e1138;border:1px solid var(--line);border-radius:12px;padding:13px 16px;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--cyan);background:#141a55}
+.opt.ok{border-color:var(--ok);background:rgba(77,255,176,.12);animation:pop .35s}
+.opt.bad{border-color:var(--bad);background:rgba(255,93,115,.12);animation:shake .35s}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;border-left:4px solid var(--cyan);background:#0e1138}
+.fb.ok{border-color:var(--ok)}.fb.bad{border-color:var(--bad)}
+.combo{color:var(--pink);font-weight:700;min-height:1.4em}
+.big{font-family:Orbitron,sans-serif;font-size:2.4rem;color:var(--gold);margin:6px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.badge{padding:6px 12px;border-radius:20px;border:1px solid var(--gold);color:var(--gold);font-weight:700}
+footer{text-align:center;color:var(--mute);font-size:.85rem}
+@keyframes pop{50%{transform:scale(1.03)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="app">
+  <header class="hud">
+    <div class="brand">NETQUEST</div>
+    <div class="stats"><span class="xp">XP <b id="xp">0</b></span><span class="hearts" id="hearts" aria-label="Nyawa"></span></div>
+  </header>
+  <main id="stage"></main>
+  <footer>Inovasi Pembelajaran Teknik Jaringan Komputer · Kelas XI TKJ</footer>
+</div>
+
+<script>
+/* ===== DATA MATERI & SOAL (mudah diedit guru) ===== */
+const MISI=[
+{ic:"🛰️",t:"Apa Itu Jaringan Komputer?",
+ brief:["<b>Jaringan komputer</b> adalah kumpulan komputer dan perangkat yang saling terhubung untuk bertukar data dan berbagi sumber daya.","Sumber daya yang bisa dibagi: <span class=kv>file</span> <span class=kv>printer</span> <span class=kv>koneksi internet</span>.","Manfaat: berbagi sumber daya, komunikasi cepat, data terpusat, dan menghemat biaya."],
+ q:[
+ {q:"Apa pengertian jaringan komputer?",o:["Beberapa komputer terhubung untuk bertukar data dan berbagi sumber daya","Satu komputer dengan banyak monitor","Kumpulan program antivirus","Komputer yang hanya terhubung ke listrik"],a:0,e:"Jaringan komputer = komputer dan perangkat yang saling terhubung untuk berbagi data dan sumber daya."},
+ {q:"Manakah yang BUKAN manfaat jaringan komputer?",o:["Berbagi printer","Bertukar file","Membuat komputer tidak butuh listrik","Berbagi akses internet"],a:2,e:"Jaringan tidak menghilangkan kebutuhan listrik. Ketiga pilihan lain adalah manfaat nyata."},
+ {q:"Satu printer di lab TKJ dipakai oleh 30 komputer. Manfaat jaringan yang dipakai adalah...",o:["Keamanan data","Berbagi sumber daya","Kecepatan prosesor","Penyimpanan awan"],a:1,e:"Printer adalah sumber daya yang dibagi lewat jaringan."}]},
+{ic:"🌐",t:"Jenis Jaringan Berdasarkan Jangkauan",
+ brief:["<span class=kv>PAN</span> Personal Area Network: jangkauan beberapa meter, contoh Bluetooth.","<span class=kv>LAN</span> Local Area Network: satu ruangan atau gedung, contoh lab komputer sekolah.","<span class=kv>MAN</span> Metropolitan Area Network: satu kota atau kawasan luas.","<span class=kv>WAN</span> Wide Area Network: antar kota atau negara. <b>Internet</b> adalah WAN terbesar."],
+ q:[
+ {q:"Jaringan komputer di dalam satu gedung sekolah termasuk jenis...",o:["PAN","LAN","MAN","WAN"],a:1,e:"Cakupan satu gedung atau ruangan adalah LAN."},
+ {q:"Jaringan dengan cakupan paling luas, contohnya internet, adalah...",o:["LAN","PAN","WAN","MAN"],a:2,e:"WAN menghubungkan wilayah sangat luas, bahkan antar negara."},
+ {q:"Headset Bluetooth yang tersambung ke HP adalah contoh...",o:["WAN","MAN","LAN","PAN"],a:3,e:"PAN untuk jangkauan pribadi yang sangat dekat."}]},
+{ic:"🕸️",t:"Topologi Jaringan",
+ brief:["<b>Topologi</b> adalah bentuk susunan atau tata letak koneksi antar perangkat jaringan.","<span class=kv>Bus</span> semua perangkat memakai satu kabel utama.","<span class=kv>Star</span> semua perangkat terhubung ke satu pusat (switch). Paling umum dipakai.","<span class=kv>Ring</span> perangkat tersusun melingkar.","<span class=kv>Mesh</span> setiap perangkat terhubung ke banyak perangkat lain, sangat tahan gangguan."],
+ q:[
+ {q:"Semua komputer terhubung ke satu switch di tengah. Ini topologi...",o:["Bus","Ring","Star","Mesh"],a:2,e:"Susunan terpusat pada switch atau hub adalah topologi Star."},
+ {q:"Kabel utama putus dan seluruh jaringan lumpuh. Topologi ini kemungkinan...",o:["Bus","Star","Mesh","Tree"],a:0,e:"Pada topologi Bus, kabel utama adalah titik lemah."},
+ {q:"Topologi yang paling tahan gangguan karena banyak jalur cadangan adalah...",o:["Bus","Mesh","Ring","Star"],a:1,e:"Mesh punya banyak jalur alternatif, tetapi biayanya mahal."}]},
+{ic:"🔌",t:"Perangkat Jaringan",
+ brief:["<span class=kv>NIC</span> kartu jaringan di komputer, antarmuka ke jaringan.","<span class=kv>Hub</span> mengirim data ke semua port.","<span class=kv>Switch</span> mengirim data hanya ke port tujuan berdasarkan <b>MAC address</b>.","<span class=kv>Router</span> menghubungkan jaringan yang berbeda, misalnya LAN ke internet, dan menentukan jalur paket.","<span class=kv>Access Point</span> memancarkan sinyal Wi-Fi."],
+ q:[
+ {q:"Perangkat yang menghubungkan jaringan lokal ke internet dan menentukan jalur paket adalah...",o:["Switch","Hub","NIC","Router"],a:3,e:"Router bekerja antar jaringan dan memilih jalur terbaik untuk paket."},
+ {q:"Perangkat yang meneruskan data hanya ke port tujuan berdasarkan MAC address adalah...",o:["Switch","Hub","Repeater","Modem"],a:0,e:"Switch lebih efisien dari hub karena tidak mengirim ke semua port."},
+ {q:"Komponen di dalam komputer yang menjadi antarmuka ke jaringan adalah...",o:["RAM","NIC","VGA","PSU"],a:1,e:"NIC (Network Interface Card) menghubungkan komputer ke media jaringan."}]},
+{ic:"📡",t:"Media Transmisi & Alamat IP",
+ brief:["<b>Kabel UTP</b> (Cat5e/Cat6) memakai konektor <span class=kv>RJ-45</span>.","<b>Fiber optic</b> mengirim data dengan cahaya, cepat dan jarak jauh.","<b>Wireless</b> memakai gelombang radio, contohnya Wi-Fi.","<b>IP address</b> adalah alamat logis pengenal perangkat, contoh <span class=kv>192.168.1.10</span>.","<b>Protokol</b> adalah aturan komunikasi antar perangkat."],
+ q:[
+ {q:"Konektor yang dipasang pada ujung kabel UTP adalah...",o:["BNC","USB","RJ-11","RJ-45"],a:3,e:"Kabel UTP jaringan memakai konektor RJ-45."},
+ {q:"Media transmisi yang mengirim data menggunakan cahaya adalah...",o:["Kabel UTP","Fiber optic","Kabel koaksial","Bluetooth"],a:1,e:"Fiber optic memakai pulsa cahaya sehingga cepat dan tahan interferensi."},
+ {q:"192.168.1.10 adalah contoh...",o:["MAC address","Nama domain","IP address","Nomor port"],a:2,e:"Alamat IPv4 berbentuk empat angka yang dipisah titik."}]}
+];
+const RANK=[[0,"Rekrut Jaringan"],[600,"Teknisi Junior"],[1100,"Network Engineer"],[1500,"Master Jaringan"]];
+const NYAWA=3;
+
+/* ===== STATE ===== */
+const $=id=>document.getElementById(id),stage=$("stage");
+const S={name:"Pemain",xp:0,stars:[],m:0,qi:0,hearts:NYAWA,combo:0,ans:false,gain:0};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rank=()=>[...RANK].reverse().find(r=>S.xp>=r[0])[1];
+function hud(){$("xp").textContent=S.xp;$("hearts").textContent="♥".repeat(S.hearts)+"♡".repeat(NYAWA-S.hearts)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ===== LAYAR ===== */
+function start(){
+ let saved="";try{saved=localStorage.getItem("nq_name")||""}catch(e){}
+ S.xp=0;S.stars=[];S.hearts=NYAWA;hud();
+ stage.innerHTML=`<section class="hero"><h1>NETQUEST</h1>
+ <p class="mute" style="font-size:1.2rem">Selesaikan 5 misi, kuasai dasar jaringan komputer, dan raih pangkat <b style="color:var(--gold)">Master Jaringan</b>.</p>
+ <div class="card"><label for="nm"><b>Nama panggilanmu</b></label><br>
+ <input id="nm" maxlength="20" placeholder="contoh: Rina_TKJ" value="${esc(saved)}" autocomplete="off">
+ <p class="mute">Aturan: tiap misi punya ${NYAWA} nyawa. Jawaban benar beruntun memberi bonus combo.</p>
+ <button class="btn" id="go">Mulai Petualangan</button></div></section>`;
+ $("go").onclick=()=>{S.name=($("nm").value.trim()||"Pemain");try{localStorage.setItem("nq_name",S.name)}catch(e){}map()};
+}
+function map(skip){
+ const open=S.stars.length;
+ stage.innerHTML=`<h2>Peta Misi</h2><p class="mute">Halo, <b style="color:var(--text)">${esc(S.name)}</b>. Pangkat saat ini: <b style="color:var(--gold)">${rank()}</b></p><div class="map">`+
+ MISI.map((m,i)=>{const st=S.stars[i]||0,lock=i>open;
+  return `<button class="mis ${st?"done":""}" data-i="${i}" ${lock?"disabled":""}><span class="ic">${lock?"🔒":m.ic}</span><span><span class="t">Misi ${i+1}: ${m.t}</span><br><span class="mute">${st?"Selesai":lock?"Selesaikan misi sebelumnya":"Siap dimainkan"}</span></span><span class="s">${st?"★".repeat(st)+"☆".repeat(3-st):""}</span></button>`}).join("")+`</div>`;
+ stage.querySelectorAll(".mis").forEach(b=>b.onclick=()=>brief(+b.dataset.i));
+ if(!skip&&S.stars.length===MISI.length)finish();
+}
+function brief(i){
+ S.m=i;const m=MISI[i];
+ stage.innerHTML=`<div class="card brief"><h2>Misi ${i+1}: ${m.t}</h2><p class="mute">Baca dulu briefing ini sebelum masuk tantangan.</p><ul>${m.brief.map(x=>`<li>${x}</li>`).join("")}</ul>
+ <div class="row"><button class="btn" id="go">Mulai Tantangan</button><button class="btn ghost" id="back">Kembali</button></div></div>`;
+ $("go").onclick=()=>{S.qi=0;S.hearts=NYAWA;S.combo=0;S.gain=0;hud();quiz()};$("back").onclick=map;
+}
+function quiz(){
+ const m=MISI[S.m],q=m.q[S.qi];S.ans=false;
+ const opts=shuffle(q.o.map((t,i)=>({t,ok:i===q.a})));
+ stage.innerHTML=`<div class="card"><div class="bar"><i style="width:${S.qi/m.q.length*100}%"></i></div>
+ <div class="combo" id="cb">${S.combo>1?"🔥 Combo x"+S.combo:""}</div>
+ <div class="q">${q.q}</div><div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join("")}</div><div id="fb"></div></div>`;
+ stage.querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(b,opts,q));
+}
+function answer(btn,opts,q){
+ if(S.ans)return;S.ans=true;
+ const bs=[...stage.querySelectorAll(".opt")];bs.forEach(b=>b.disabled=true);
+ const good=opts[+btn.dataset.i].ok;let msg;
+ bs.forEach((b,i)=>{if(opts[i].ok)b.classList.add("ok")});
+ if(good){S.combo++;const g=100+(S.combo>1?(S.combo-1)*20:0);S.xp+=g;S.gain+=g;msg=`Benar! +${g} XP`}
+ else{btn.classList.add("bad");S.hearts--;S.combo=0;msg="Belum tepat."}
+ hud();
+ const last=S.qi===MISI[S.m].q.length-1,dead=S.hearts<=0;
+ $("fb").innerHTML=`<div class="fb ${good?"ok":"bad"}"><b>${msg}</b> ${q.e}</div><div class="row"><button class="btn" id="nx">${dead||last?"Lihat Hasil":"Soal Berikutnya"}</button></div>`;
+ $("nx").focus();
+ $("nx").onclick=()=>{if(dead||last)result(!dead);else{S.qi++;quiz()}};
+}
+function result(win){
+ const stars=win?Math.max(1,S.hearts):0;
+ if(win)S.stars[S.m]=Math.max(S.stars[S.m]||0,stars);
+ stage.innerHTML=`<div class="card"><h2>${win?"Misi Selesai!":"Misi Gagal"}</h2>
+ <div class="big">${win?"★".repeat(stars)+"☆".repeat(3-stars):"💥"}</div>
+ <p>${win?"Kamu menguasai materi ini dan mendapat <b>+"+S.gain+" XP</b>.":"Nyawa habis. Baca ulang briefing lalu coba lagi, ya."}</p>
+ <div class="row">${win?`<button class="btn" id="mp">Ke Peta Misi</button>`:`<button class="btn" id="rt">Ulangi Briefing</button><button class="btn ghost" id="mp">Peta Misi</button>`}</div></div>`;
+ if(!win){S.xp-=S.gain;hud();$("rt").onclick=()=>brief(S.m)}
+ $("mp").onclick=map;
+}
+function finish(){
+ const badges=["Pemula Jaringan","Penjelajah Jaringan","Arsitek Topologi","Ahli Perangkat","Penakluk IP"];
+ stage.innerHTML=`<div class="card"><h2>Semua Misi Tuntas!</h2>
+ <p><b>${esc(S.name)}</b>, pangkatmu sekarang:</p><div class="big">${rank()}</div>
+ <p>Total XP: <b style="color:var(--gold)">${S.xp}</b> · Bintang: <b style="color:var(--gold)">${S.stars.reduce((a,b)=>a+b,0)}/${MISI.length*3}</b></p>
+ <div class="badges">${badges.map(b=>`<span class="badge">🏅 ${b}</span>`).join("")}</div>
+ <p class="mute">Ingin pangkat lebih tinggi? Ulangi misi dan jawab beruntun tanpa salah untuk bonus combo.</p>
+ <div class="row"><button class="btn" id="again">Main Lagi</button><button class="btn ghost" id="mp">Peta Misi</button></div></div>`;
+ $("again").onclick=start;$("mp").onclick=()=>map(true);
+}
+
+/* ===== LATAR JARINGAN ANIMASI ===== */
+(function(){
+ const c=$("bg"),x=c.getContext("2d");let w,h,n=[];
+ const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
+ function size(){w=c.width=innerWidth;h=c.height=innerHeight;n=Array.from({length:Math.min(50,Math.floor(w*h/22000))},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35}))}
+ function draw(){
+  x.clearRect(0,0,w,h);
+  for(const a of n){if(!calm){a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1}
+   for(const b of n){const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){x.strokeStyle=`rgba(51,230,255,${(1-d/150)*.28})`;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+   x.fillStyle="rgba(255,79,163,.8)";x.beginPath();x.arc(a.x,a.y,2.2,0,7);x.fill()}
+  if(!calm)requestAnimationFrame(draw)
+ }
+ addEventListener("resize",()=>{size();if(calm)draw()});size();draw();
+})();
+start();
+</script>
+</body>
+</html>
